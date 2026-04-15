@@ -17,8 +17,17 @@ async fn query_pre_data(cust_no: &str) -> Result<Value, String> {
 }
 
 #[tauri::command]
-async fn send_api_request(url: &str, payload: &Value) -> Result<Value, String> {
-    api::send_http_request(url, payload)
+async fn query_data_by_table(cust_no: &str, table_name: &str) -> Result<Value, String> {
+    // 使用默认数据库连接
+    let db_url = "postgres://user:password@localhost:5432/dcdpdb1";
+    db::query_by_table(db_url, table_name, cust_no)
+        .await
+        .map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+async fn send_api_request(url: &str, payload: Value) -> Result<Value, String> {
+    api::send_http_request(url, &payload)
         .await
         .map_err(|e| e.to_string())
 }
@@ -39,6 +48,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             greet,
             query_pre_data,
+            query_data_by_table,
             send_api_request,
             query_post_data
         ])

@@ -12,9 +12,9 @@
   "app": {
     "windows": [
       {
-        "title": "api_post_solo",
-        "width": 800,
-        "height": 600
+        "title": "数据一致性自动化核对工具",
+        "width": 1400,
+        "height": 900
       }
     ],
     "security": {
